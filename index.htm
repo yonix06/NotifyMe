@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+    <img src="/ressources/logo.png" alt="Logo">
+    <form method="POST" action="/">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="path">Chemin du dossier:</label><br>
+        <input type="text" id="path" name="path" required><br>
+        <input type="submit" value="Programmer la surveillance">
+    </form>
+    <form method="POST" action="/start">
+        <input type="submit" value="Démarrer la surveillance">
+    </form>
+    <form method="POST" action="/stop">
+        <input type="submit" value="Arrêter la surveillance">
+    </form>
+</body>
+</html>
