@@ -8,7 +8,7 @@ body {
     margin: 0;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    font-weight: bold; /* Ajoutez cette ligne */
+    font-weight: bold;
 }
 img {
     width: 150px;
@@ -19,6 +19,19 @@ form {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+form input[type="submit"] {
+    margin-top: 20px; 
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+form input[type="submit"]:hover {
+    background-color: #0056b3;
 }
 input[type="submit"] {
     background-color: #007BFF;

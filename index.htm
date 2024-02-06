@@ -15,17 +15,22 @@
 <body>
     <img src="https://www.saint-jean-cap-ferrat.fr/wp-content/uploads/2024/02/Logo-SITEINTERNET-1.png" alt="Logo">
     <form method="POST" action="/" onsubmit="submitForm(event, '/')">
-        <input type="submit" value="Programmer la surveillance" disabled><br>
+        <h2>Programmer la surveillance</h2><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
         <label for="path">Chemin du dossier:</label><br>
-        <input type="text" id="path" name="path" required><br>
+        <input type="text" id="path" name="path" required><br><br>
+    
+        <!-- Bouton Start -->
+        <form method="POST" action="/start" onsubmit="submitForm(event, '/start')">
+            <input type="submit" value="Démarrer la surveillance">
+        </form>
+    
+        <!-- Bouton Stop -->
+        <form method="POST" action="/stop" onsubmit="submitForm(event, '/stop')">
+            <input type="submit" value="Arrêter la surveillance">
+        </form>
     </form>
-    <form method="POST" action="/start" onsubmit="submitForm(event, '/start')">
-        <input type="submit" value="Démarrer la surveillance">
-    </form>
-    <form method="POST" action="/stop" onsubmit="submitForm(event, '/stop')">
-        <input type="submit" value="Arrêter la surveillance">
-    </form>
+    
 </body>
 </html>
