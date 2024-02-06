@@ -12,7 +12,7 @@ import sqlite3
  
 class MonHandler(FileSystemEventHandler):
     def __init__(self, email):
-self.email = email
+        self.email = email
  
     def on_modified(self, event):
         self.envoyer_email(f'Le fichier {event.src_path} a été modifié')
@@ -23,10 +23,10 @@ self.email = email
     def envoyer_email(self, message):
         msg = MIMEMultipart()
         msg['From'] = 'votre_email@office365.com'
-msg['To'] = self.email
+        msg['To'] = self.email
         msg['Subject'] = 'Notification de modification de fichier'
         msg.attach(MIMEText(message, 'plain'))
-server = smtplib.SMTP('smtp.office365.com', 587)
+        server = smtplib.SMTP('smtp.office365.com', 587)
         server.starttls()
         server.login(msg['From'], 'votre_mot_de_passe')
         server.send_message(msg)
