@@ -3,22 +3,28 @@
 <head>
     <title>Centre de Notification</title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script>
+        function submitForm(event, path) {
+            event.preventDefault();
+            fetch(path, { method: 'POST' })
+                .then(response => response.text())
+                .then(data => alert(data));
+        }
+    </script>
 </head>
 <body>
     <img src="https://www.saint-jean-cap-ferrat.fr/wp-content/uploads/2024/02/Logo-SITEINTERNET-1.png" alt="Logo">
-    <form method="POST" action="/">
+    <form method="POST" action="/" onsubmit="submitForm(event, '/')">
         <input type="submit" value="Programmer la surveillance" disabled><br>
-        <br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
         <label for="path">Chemin du dossier:</label><br>
         <input type="text" id="path" name="path" required><br>
-        
     </form>
-    <form method="POST" action="/start">
+    <form method="POST" action="/start" onsubmit="submitForm(event, '/start')">
         <input type="submit" value="Démarrer la surveillance">
     </form>
-    <form method="POST" action="/stop">
+    <form method="POST" action="/stop" onsubmit="submitForm(event, '/stop')">
         <input type="submit" value="Arrêter la surveillance">
     </form>
 </body>

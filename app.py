@@ -36,7 +36,7 @@ app = Flask(__name__)
 observer = Observer()
  
 def init_db():
-    conn = sqlite3.connect('mon_application/database.db')
+    conn = sqlite3.connect('./database.db')
     c = conn.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS watchers (email TEXT, path TEXT)')
     conn.commit()
@@ -79,6 +79,7 @@ def stop():
     # Ici, nous devons obtenir l'instance correcte de MonHandler qui a été créée lors du démarrage de la surveillance.
     # Pour l'instant, je vais créer une nouvelle instance avec le même e-mail, mais dans une application réelle, vous devrez gérer cela différemment.
     email = request.form.get('email')  # Assurez-vous que cet e-mail est le même que celui utilisé pour démarrer la surveillance.
+    path = request.form.get('path')
     event_handler = MonHandler(email)
     observer.unschedule_all()
     event_handler.envoyer_email("La surveillance a été arrêtée pour le dossier " + path)

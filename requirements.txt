@@ -1,0 +1,5 @@
+Flask==1.1.2
+smtplib==0.0.1
+email==6.0.0
+watchdog==2.1.5
+sqlite3==0.0.1
