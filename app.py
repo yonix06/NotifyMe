@@ -22,13 +22,13 @@ class MonHandler(FileSystemEventHandler):
  
     def envoyer_email(self, message):
         msg = MIMEMultipart()
-        msg['From'] = 'votre_email@office365.com'
+        msg['From'] = 'notification@saintjeancapferrat.fr'
         msg['To'] = self.email
         msg['Subject'] = 'Notification de modification de fichier'
         msg.attach(MIMEText(message, 'plain'))
         server = smtplib.SMTP('smtp.office365.com', 587)
         server.starttls()
-        server.login(msg['From'], 'votre_mot_de_passe')
+        server.login(msg['From'], 'mot-de-passe')
         server.send_message(msg)
         server.quit()
  
@@ -71,11 +71,17 @@ def start():
     event_handler = MonHandler(email)
     observer.schedule(event_handler, path=path, recursive=True)
     observer.start()
+    event_handler.envoyer_email("La surveillance a commencé pour le dossier " + path)
     return f"Surveillance démarrée pour le dossier {path} avec l'e-mail {email}"
  
 @app.route('/stop', methods=['POST'])
 def stop():
+    # Ici, nous devons obtenir l'instance correcte de MonHandler qui a été créée lors du démarrage de la surveillance.
+    # Pour l'instant, je vais créer une nouvelle instance avec le même e-mail, mais dans une application réelle, vous devrez gérer cela différemment.
+    email = request.form.get('email')  # Assurez-vous que cet e-mail est le même que celui utilisé pour démarrer la surveillance.
+    event_handler = MonHandler(email)
     observer.unschedule_all()
+    event_handler.envoyer_email("La surveillance a été arrêtée pour le dossier " + path)
     return "Surveillance arrêtée"
  
 def stop_observer():
