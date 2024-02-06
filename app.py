@@ -9,96 +9,97 @@ import atexit
 import signal
 import os
 import sqlite3
- 
+from contextlib import closing
+
 class MonHandler(FileSystemEventHandler):
-    def __init__(self, email):
+    def __init__(self, email, server):
         self.email = email
- 
+        self.server = server
+
     def on_modified(self, event):
         self.envoyer_email(f'Le fichier {event.src_path} a été modifié')
- 
+
     def on_created(self, event):
         self.envoyer_email(f'Le fichier {event.src_path} a été créé')
- 
+
     def envoyer_email(self, message):
         msg = MIMEMultipart()
         msg['From'] = 'notification@saintjeancapferrat.fr'
         msg['To'] = self.email
         msg['Subject'] = 'Notification de modification de fichier'
         msg.attach(MIMEText(message, 'plain'))
-        server = smtplib.SMTP('smtp.office365.com', 587)
-        server.starttls()
-        server.login(msg['From'], 'mot-de-passe')
-        server.send_message(msg)
-        server.quit()
- 
+        self.server.send_message(msg)
+
 app = Flask(__name__)
 observer = Observer()
- 
+
 def init_db():
-    conn = sqlite3.connect('./database.db')
-    c = conn.cursor()
-    c.execute('CREATE TABLE IF NOT EXISTS watchers (email TEXT, path TEXT)')
-    conn.commit()
- 
-    # Démarrer la surveillance pour chaque entrée dans la base de données
-    c.execute('SELECT * FROM watchers')
-    for row in c.fetchall():
-        email, path = row
-        event_handler = MonHandler(email)
-        observer.schedule(event_handler, path=path, recursive=True)
-        observer.start()
- 
-    conn.close()
- 
+    with closing(sqlite3.connect('./database.db')) as conn:
+        c = conn.cursor()
+        c.execute('CREATE TABLE IF NOT EXISTS watchers (email TEXT, path TEXT)')
+        conn.commit()
+
+        c.execute('SELECT * FROM watchers')
+        for row in c.fetchall():
+            email, path = row
+            server = smtplib.SMTP('smtp.office365.com', 587)
+            server.starttls()
+            server.login('notification@saintjeancapferrat.fr', os.getenv('EMAIL_PASSWORD'))
+            event_handler = MonHandler(email, server)
+            observer.schedule(event_handler, path=path, recursive=True)
+            observer.start()
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         email = request.form.get('email')
         path = request.form.get('path')
-        conn = sqlite3.connect('mon_application/database.db')
-        c = conn.cursor()
-        c.execute('INSERT INTO watchers VALUES (?, ?)', (email, path))
-        conn.commit()
-        conn.close()
+        with closing(sqlite3.connect('mon_application/database.db')) as conn:
+            c = conn.cursor()
+            c.execute('INSERT INTO watchers VALUES (?, ?)', (email, path))
+            conn.commit()
         return f"Surveillance programmée pour le dossier {path} avec l'e-mail {email}"
     return render_template('index.html')
- 
+
 @app.route('/start', methods=['POST'])
 def start():
     email = request.form.get('email')
     path = request.form.get('path')
-    event_handler = MonHandler(email)
+    server = smtplib.SMTP('smtp.office365.com', 587)
+    server.starttls()
+    server.login('notification@saintjeancapferrat.fr', os.getenv('EMAIL_PASSWORD'))
+    event_handler = MonHandler(email, server)
     observer.schedule(event_handler, path=path, recursive=True)
     observer.start()
     event_handler.envoyer_email("La surveillance a commencé pour le dossier " + path)
     return f"Surveillance démarrée pour le dossier {path} avec l'e-mail {email}"
- 
+
 @app.route('/stop', methods=['POST'])
 def stop():
-    # Ici, nous devons obtenir l'instance correcte de MonHandler qui a été créée lors du démarrage de la surveillance.
-    # Pour l'instant, je vais créer une nouvelle instance avec le même e-mail, mais dans une application réelle, vous devrez gérer cela différemment.
-    email = request.form.get('email')  # Assurez-vous que cet e-mail est le même que celui utilisé pour démarrer la surveillance.
+    email = request.form.get('email')
     path = request.form.get('path')
-    event_handler = MonHandler(email)
+    server = smtplib.SMTP('smtp.office365.com', 587)
+    server.starttls()
+    server.login('notification@saintjeancapferrat.fr', os.getenv('EMAIL_PASSWORD'))
+    event_handler = MonHandler(email, server)
     observer.unschedule_all()
     event_handler.envoyer_email("La surveillance a été arrêtée pour le dossier " + path)
     return "Surveillance arrêtée"
- 
+
 def stop_observer():
     observer.stop()
     observer.join()
- 
+
 atexit.register(stop_observer)
- 
+
 def signal_handler(signum, frame):
     print(f"Signal {signum} reçu, arrêt de l'observateur...")
     stop_observer()
     os._exit(0)
- 
+
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
- 
+
 if __name__ == "__main__":
     init_db()
 app.run(debug=True)
