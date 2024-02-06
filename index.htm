@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Centre de Notification</title>
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
-    <img src="/ressources/logo.png" alt="Logo">
+    <img src="https://www.saint-jean-cap-ferrat.fr/wp-content/uploads/2024/02/Logo-SITEINTERNET-1.png" alt="Logo">
     <form method="POST" action="/">
+        <input type="submit" value="Programmer la surveillance" disabled><br>
+        <br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
         <label for="path">Chemin du dossier:</label><br>
         <input type="text" id="path" name="path" required><br>
-        <input type="submit" value="Programmer la surveillance">
+        
     </form>
     <form method="POST" action="/start">
         <input type="submit" value="Démarrer la surveillance">
