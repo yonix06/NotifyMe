@@ -13,7 +13,13 @@
     </script>
 </head>
 <body>
-    <div id="menu">
+    <img id="menu-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1200px-Hamburger_icon.svg.png" alt="Menu">
+        <script>
+            document.getElementById('menu-logo').addEventListener('click', function() {
+                document.getElementById('menu').classList.toggle('hidden');
+            });
+        </script>
+    <div id="menu" class="hidden">
         <ul>
             <li id="theme-switcher">Changer de thème</li>
             <!-- Ajoutez d'autres éléments de liste ici si vous voulez plus d'options dans le menu -->
@@ -28,9 +34,12 @@
     <h2 id="titre">Outil de surveillance de dossiers</h2>
     <form method="POST" action="/" onsubmit="submitForm(event, '/')">
         <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br>
+        <input type="email" id="email" name="email" required><br><br>
         <label for="path">Chemin du dossier:</label><br>
-        <input type="text" id="path" name="path" required><br><br>
+        <input type="text" id="path" name="path" required><br>
+        <input type="file" id="file" name="file" webkitdirectory><br>
+
+
     
         <!-- Bouton Start -->
         <form method="POST" action="/start" onsubmit="submitForm(event, '/start')">

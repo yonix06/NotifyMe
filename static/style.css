@@ -61,12 +61,22 @@ input[type="submit"]:hover {
     font-weight: bold;
     text-shadow: 2px 2px #9494946e;
 }
+#menu-logo {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    cursor: pointer;
+    width: 5%; /* Réduisez la taille à 25% de la taille originale pour obtenir une réduction de 75% */
+    height: auto; /* Ajustez la hauteur pour maintenir les proportions */
+    opacity: 0.5; /* 0.0 est totalement transparent, 1.0 est totalement opaque */
+}
 #menu {
     position: fixed;
-    top: 0;
+    top: 50px; /* Ajustez cette valeur en fonction de la taille de votre logo */
     left: 0;
     background-color: #fff;
     padding: 10px;
+    border-radius: 8px; /* Ajoutez cette ligne pour rendre les coins du menu arrondis */
 }
 #menu ul {
     list-style-type: none;
@@ -74,6 +84,9 @@ input[type="submit"]:hover {
 }
 #menu li {
     cursor: pointer;
+}
+.hidden {
+    display: none;
 }
 body.dark-theme {
     background-color: #000;
@@ -83,4 +96,3 @@ body.dark-theme #menu {
     background-color: #000;
     color: #fff;
 }
-
