@@ -13,9 +13,20 @@
     </script>
 </head>
 <body>
+    <div id="menu">
+        <ul>
+            <li id="theme-switcher">Changer de thème</li>
+            <!-- Ajoutez d'autres éléments de liste ici si vous voulez plus d'options dans le menu -->
+        </ul>
+        <script>
+            document.getElementById('theme-switcher').addEventListener('click', function() {
+                document.body.classList.toggle('dark-theme');
+            });
+        </script>        
+    </div>
     <img src="https://www.saint-jean-cap-ferrat.fr/wp-content/uploads/2024/02/Logo-SITEINTERNET-1.png" alt="Logo">
+    <h2 id="titre">Outil de surveillance de dossiers</h2>
     <form method="POST" action="/" onsubmit="submitForm(event, '/')">
-        <h2>Programmer la surveillance</h2><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
         <label for="path">Chemin du dossier:</label><br>
@@ -31,6 +42,8 @@
             <input type="submit" value="Arrêter la surveillance">
         </form>
     </form>
-    
+    <a href="https://assistance.saintjeancapferrat.fr/">
+        <img id="logo" src="https://assistance.saintjeancapferrat.fr/pics/favicon.ico" alt="Logo">
+    </a> 
 </body>
 </html>

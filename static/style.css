@@ -44,3 +44,43 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #0056b3;
 }
+#logo {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    opacity: 0.5;
+    width: 5%; 
+    height: auto; 
+}
+#titre {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007BFF;
+    font-size: 24px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px #9494946e;
+}
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    padding: 10px;
+}
+#menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+#menu li {
+    cursor: pointer;
+}
+body.dark-theme {
+    background-color: #000;
+    color: #fff;
+}
+body.dark-theme #menu {
+    background-color: #000;
+    color: #fff;
+}
+
